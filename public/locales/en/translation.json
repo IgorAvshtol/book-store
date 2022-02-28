@@ -1,0 +1,49 @@
+{
+  "description": {
+    "part1": "Main",
+    "part2": "Favorites",
+    "part3": "Sign Up",
+    "part4": "Sign In",
+    "part5": "Fill in to register:",
+    "part6": "First Name",
+    "part7": "E-Mail",
+    "part8": "Password",
+    "part9": "Fill in to enter:",
+    "part10": "Log out",
+    "part11": "Wait...",
+    "part12": "Please login or register..."
+  },
+  "form": {
+    "authors": "Authors",
+    "title": "Fill the form:",
+    "name": "Title",
+    "done": "Done!",
+    "error": "Error!",
+    "description": "Description",
+    "image": "Image",
+    "pages": "Pages",
+    "section": "Section",
+    "drag": "Drag photo here",
+    "drop": "Drop this"
+  },
+  "comments": {
+    "placeholder": "Enter your text",
+    "button": "Send"
+  },
+  "select": {
+    "add_book": "Add book",
+    "my_publications": "My publications",
+    "logout": "Logout"
+  },
+  "publications": {
+    "no_publications": "You don't have any posts yet",
+    "apply_changes": "Apply changes"
+  },
+  "validation": {
+    "pages_field": "Must be a number",
+    "field": "Required input"
+  },
+  "search": {
+    "input": "Search"
+  }
+}
