@@ -9,7 +9,7 @@ export enum TypesKeys {
 export interface IUser {
   firstName: string;
   email: string;
-  id: string;
+  id: number;
 }
 
 export interface IAuthState {

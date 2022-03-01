@@ -42,7 +42,7 @@ const useStyles = makeStyles({
 
 interface ICommentsPage {
   comments?: IComment[];
-  id: string
+  id: number
 }
 
 export function CommentsPage({ comments, id }: ICommentsPage) {

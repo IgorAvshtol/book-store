@@ -23,8 +23,8 @@ interface ICardItem {
   image: string;
   authors: string;
   title: string;
-  id: string;
-  likes: string[];
+  id: number;
+  likes: number[];
   description: string;
   senderEmail?: string;
   departureDate: any;
@@ -70,17 +70,21 @@ export function CardItem({ image, id, likes, description, senderEmail, departure
 
   const countOfLikes = likes?.length;
 
-  const onLikeClickHandler = (id: string) => {
+  const onLikeClickHandler = (id: number) => {
     dispatch(setLikeBook(id));
   };
 
-  const onDislikeClickHandler = (id: string) => {
+  const onDislikeClickHandler = (id: number) => {
     dispatch(setDislikeBook(id));
   };
 
-  const onBookCardClickHandler = (id: string) => {
+  const onBookCardClickHandler = (id: number) => {
     dispatch(actions.setCurrentBookAC(id));
   };
+
+  const milliseconds = Date.parse(departureDate);
+  const yearAndMonth = new Date(milliseconds).toLocaleDateString();
+  const hoursAndMinutes = new Date(milliseconds).toLocaleTimeString().split(':').slice(0, 2).join(':');
 
   const avatarLetter = senderEmail?.toUpperCase().split('').splice(0, 1).join();
 
@@ -93,12 +97,12 @@ export function CardItem({ image, id, likes, description, senderEmail, departure
               </Avatar>
             }
             title={senderEmail}
-            subheader={departureDate}
+            subheader={`${yearAndMonth} ${hoursAndMinutes}`}
         />
         <NavLink to={`/book/${id}`} onClick={() => onBookCardClickHandler(id)}>
           <CardMedia
               component="img"
-              image={'http://localhost:3000/'+image}
+              image={'http://localhost:3000/' + image}
               alt="Book photo"
           />
         </NavLink>

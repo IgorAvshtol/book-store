@@ -46,12 +46,13 @@ export function NavigateMenu() {
   const countOfPublications = useSelector<AppRootStateType, ICollection[]>((state: AppRootStateType) => state.collection.currentUserPublications);
 
   const userData = useSelector<AppRootStateType, IUser | null>(state => state.auth.user);
+  console.log(userData);
 
-  useEffect(() => {
-    if (userData?.id) {
-      dispatch(actions.setCurrentUserPublicationsAC(userData?.id));
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (userData?.id) {
+  //     dispatch(actions.setCurrentUserPublicationsAC(userData?.id));
+  //   }
+  // }, []);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);

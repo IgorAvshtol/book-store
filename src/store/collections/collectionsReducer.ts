@@ -29,7 +29,7 @@ export const collectionReducer = (state = initialState, action: ActionType): ICo
     case TypesKeys.CURRENT_BOOK_HAS_LIKED:
       return {
         ...state,
-        collection: state.collection.map(n => n.id === action.payload.likeData.bookId ? {
+        collection: state.collection.map(n => n.id === action.payload.likeData.id ? {
           ...n,
           likes: Array.from(new Set([...n.likes, action.payload.likeData.userId]))
         } : n)
@@ -37,7 +37,7 @@ export const collectionReducer = (state = initialState, action: ActionType): ICo
     case TypesKeys.CURRENT_BOOK_HAS_DISLIKED:
       return {
         ...state,
-        collection: state.collection.map(n => n.id === action.payload.likeData.bookId ? {
+        collection: state.collection.map(n => n.id === action.payload.likeData.id ? {
           ...n,
           likes: [...n.likes.filter(like => like !== action.payload.likeData.userId)]
         } : n)
@@ -71,10 +71,15 @@ export const collectionReducer = (state = initialState, action: ActionType): ICo
               : state.currentBook.comments
         }
       };
+      // case TypesKeys.SET_CURRENT_SECTIONS:
+      //   return {
+      //     ...state,
+      //     currentSections: [...state.currentSections, action.payload]
+      //   };
     case TypesKeys.SET_CURRENT_SECTIONS:
       return {
         ...state,
-        currentSections: [...state.currentSections, action.payload]
+        currentSections: [...state.currentSections, ...state.collection.map(book => book.section)]
       };
     case TypesKeys.SET_CURRENT_USER_PUBLICATIONS:
       return {

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ICollection } from '../store/collections/collectionsTypes';
+import { ICollection, ILike } from '../store/collections/collectionsTypes';
 
 const instance = axios.create({
   withCredentials: true,
@@ -13,7 +13,7 @@ export const authAPI = {
   signUp(fullName: string, email: string, password: string) {
     return instance.post(`auth/register`, { fullName, email, password });
   },
-  signIn( email: string, password: string) {
+  signIn(email: string, password: string) {
     return instance.post(`auth/login`, { email, password });
   },
   logout() {
@@ -24,5 +24,14 @@ export const authAPI = {
 export const booksAPI = {
   getBooks() {
     return instance.get<ICollection[]>(`books`);
+  },
+  setLike(likeData: ILike) {
+    return instance.patch(`books/like`, likeData);
+  },
+  setDislike(likeData: ILike) {
+    return instance.patch(`books/dislike`, likeData);
+  },
+  getCurrentBook(bookId: number) {
+    return instance.get(`books/${bookId}`);
   }
 };

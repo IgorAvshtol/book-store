@@ -77,7 +77,7 @@ export function ItemPage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getCurrentBook(bookId!));
+    dispatch(getCurrentBook(Number(bookId!)));
   }, []);
 
   const book = useSelector<AppRootStateType, ICollection>(state => state.collection.currentBook);
@@ -85,7 +85,7 @@ export function ItemPage() {
   return (
       <Container maxWidth={'xl'}>
         <Box className={smallQuery ? classes.containerResponse : classes.container}>
-          <img src={book.imageURL} className={smallQuery ? classes.mainImageResponse : classes.mainImage} alt="book-cover"/>
+          <img src={'http://localhost:3000/'+book.imageURL} className={smallQuery ? classes.mainImageResponse : classes.mainImage} alt="book-cover"/>
           <Box className={smallQuery ? classes.descriptionsBlockResponse : classes.descriptionsBlock}>
             <Box className={classes.iconsBlock}>
               <div className={classes.iconBlock}>

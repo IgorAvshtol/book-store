@@ -18,7 +18,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import {
   ActionType,
   ICollection,
-  IComment,
+  IComment, ILike,
   ISetBook,
   IUpdateData,
   IUpdateDataWithId
@@ -29,106 +29,66 @@ import { actionsAlert } from '../alert/alertActions';
 import { actionsAuth } from '../auth/authActions';
 import { booksAPI } from '../../api/api';
 
-
-// export const getUsersCollections = (): ThunkAction<void, AppRootStateType, null, ActionType> => {
-//   return async (dispatch: Dispatch) => {
-//     const db = getFirestore();
-//     dispatch(actionsAuth.setLoadingAC(true));
-//     const collections = await getDocs(collection(db, 'books'));
-//     collections.forEach((doc) => {
-//       const {
-//         authors,
-//         title,
-//         description,
-//         imageURL,
-//         pages,
-//         section,
-//         id,
-//         likes,
-//         senderEmail,
-//         senderId,
-//         departureDate,
-//         comments,
-//         dateUTC
-//       } = doc.data();
-//       const collection: ICollection = {
-//         authors: authors,
-//         title: title,
-//         description: description,
-//         imageURL: imageURL,
-//         pages: pages,
-//         section: section,
-//         id: id,
-//         likes: likes,
-//         senderEmail: senderEmail,
-//         senderId: senderId,
-//         departureDate: departureDate,
-//         comments: comments,
-//         dateUTC: dateUTC
-//       };
-//       dispatch(actions.setCurrentSectionsAC(section));
-//       dispatch(actions.getCollectionAC(collection));
-//     });
-//     dispatch(actionsAuth.setLoadingAC(false));
-//   };
-// };
-
 export const getUsersCollections = (): ThunkAction<void, AppRootStateType, null, ActionType> => {
-      return async (dispatch: Dispatch) => {
-        dispatch(actionsAuth.setLoadingAC(true));
-        const {data} = await booksAPI.getBooks();
-        // dispatch(actions.setCurrentSectionsAC(section));
-        // @ts-ignore
-        dispatch(actions.getCollectionAC(data));
-
-
-        dispatch(actionsAuth.setLoadingAC(false));
-      };
-    }
-
-
-export const getCurrentBook = (bookId: string): ThunkAction<void, AppRootStateType, null, ActionType> => {
   return async (dispatch: Dispatch) => {
-    const db = getFirestore();
-    const docRef = doc(db, 'books', `${bookId}`);
-    const docSnap = await getDoc(docRef);
-    const book = docSnap.data();
-    if (book) {
-      const currentBook: ICollection = {
-        authors: book.authors,
-        title: book.title,
-        description: book.description,
-        imageURL: book.imageURL,
-        pages: book.pages,
-        section: book.section,
-        id: book.id,
-        likes: book.likes,
-        senderEmail: book.senderEmail,
-        senderId: book.senderId,
-        departureDate: book.departureDate,
-        comments: book.comments,
-        dateUTC: book.dateUTC
-      };
-      dispatch(actions.getCurrentBookAC(currentBook));
+    dispatch(actionsAuth.setLoadingAC(true));
+    const { data } = await booksAPI.getBooks();
+    // @ts-ignore
+    dispatch(actions.getCollectionAC(data));
+    dispatch(actions.setCurrentSectionsAC());
+    dispatch(actionsAuth.setLoadingAC(false));
+  };
+};
+
+export const getCurrentBook = (bookId: number): ThunkAction<void, AppRootStateType, null, ActionType> => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const book = await booksAPI.getCurrentBook(bookId);
+      dispatch(actions.getCurrentBookAC(book.data));
+    } catch (e) {
+      console.log(e);
     }
   };
 };
 
-export const setLikeBook = (id: string): ThunkAction<void, AppRootStateType, null, ActionType> => {
+// export const getCurrentBook = (bookId: string): ThunkAction<void, AppRootStateType, null, ActionType> => {
+//   return async (dispatch: Dispatch) => {
+//     const db = getFirestore();
+//     const docRef = doc(db, 'books', `${bookId}`);
+//     const docSnap = await getDoc(docRef);
+//     const book = docSnap.data();
+//     if (book) {
+//       const currentBook: ICollection = {
+//         authors: book.authors,
+//         title: book.title,
+//         description: book.description,
+//         imageURL: book.imageURL,
+//         pages: book.pages,
+//         section: book.section,
+//         id: book.id,
+//         likes: book.likes,
+//         senderEmail: book.senderEmail,
+//         senderId: book.senderId,
+//         departureDate: book.departureDate,
+//         comments: book.comments,
+//         dateUTC: book.dateUTC
+//       };
+//       dispatch(actions.getCurrentBookAC(currentBook));
+//     }
+//   };
+// };
+
+export const setLikeBook = (id: number): ThunkAction<void, AppRootStateType, null, ActionType> => {
   return async (dispatch: Dispatch) => {
     try {
       const state = store.getState();
       const uid = state.auth.user?.id;
-      const db = getFirestore();
-      const ref = doc(db, 'books', `${id}`);
-      await updateDoc(ref, {
-        likes: arrayUnion(`${uid}`)
-      });
       if (uid) {
-        const likeData = {
-          bookId: id,
+        const likeData: ILike = {
+          id: id,
           userId: uid
         };
+        await booksAPI.setLike(likeData);
         dispatch(actions.setLikedAC({ likeData }));
       }
     } catch (err: any) {
@@ -137,21 +97,17 @@ export const setLikeBook = (id: string): ThunkAction<void, AppRootStateType, nul
   };
 };
 
-export const setDislikeBook = (id: string): ThunkAction<void, AppRootStateType, null, ActionType> => {
+export const setDislikeBook = (id: number): ThunkAction<void, AppRootStateType, null, ActionType> => {
   return async (dispatch: Dispatch) => {
     try {
       const state = store.getState();
       const uid = state.auth.user?.id;
-      const db = getFirestore();
-      const ref = doc(db, 'books', `${id}`);
-      await updateDoc(ref, {
-        likes: arrayRemove(`${uid}`)
-      });
       if (uid) {
-        const likeData = {
-          bookId: id,
+        const likeData: ILike = {
+          id: id,
           userId: uid
         };
+        await booksAPI.setDislike(likeData);
         dispatch(actions.setDislikedAC({ likeData }));
       }
     } catch (err: any) {
@@ -191,11 +147,11 @@ export const setCollection = (data: ISetBook): ThunkAction<void, AppRootStateTyp
               description: data.description,
               imageURL: url,
               section: data.section,
-              id: refCollection.id,
+              id: 1,
               likes: [],
               comments: [],
               senderEmail: userEmail,
-              senderId: userId,
+              // senderId: userId,
               departureDate: `${yearAndMonth} ${hoursAndMinutes}`,
               dateUTC: new Date().getTime()
             };
@@ -217,7 +173,7 @@ export const setCollection = (data: ISetBook): ThunkAction<void, AppRootStateTyp
   };
 };
 
-export const setCommentThunk = (id: string, comment: string): ThunkAction<void, AppRootStateType, null, ActionType> => {
+export const setCommentThunk = (id: number, comment: string): ThunkAction<void, AppRootStateType, null, ActionType> => {
   return async (dispatch: Dispatch) => {
     try {
       const state = store.getState();
@@ -245,7 +201,7 @@ export const setCommentThunk = (id: string, comment: string): ThunkAction<void, 
   };
 };
 
-export const editPublication = (publicationId: string, updateData: IUpdateData): ThunkAction<void, AppRootStateType, null, ActionType> => {
+export const editPublication = (publicationId: number, updateData: IUpdateData): ThunkAction<void, AppRootStateType, null, ActionType> => {
   return async (dispatch: Dispatch) => {
     try {
       const db = getFirestore();

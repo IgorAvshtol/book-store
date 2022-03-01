@@ -77,11 +77,11 @@ export const PublicationForm = ({ publication }: IPublication) => {
     pages: yup.number().typeError(t('validation.pages_field')).required(t('validation.field')),
   });
 
-  const onEditOnButtonClick = (id: string) => {
+  const onEditOnButtonClick = (id: number) => {
     setEditMode(true)
   };
 
-  const onEditOffButtonClick = (id: string) => {
+  const onEditOffButtonClick = (id: number) => {
     setEditMode(false)
   };
 

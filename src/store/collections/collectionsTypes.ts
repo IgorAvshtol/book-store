@@ -17,10 +17,10 @@ export interface ICollection {
   imageURL: string;
   pages: string;
   section: string;
-  id: string;
-  likes: string[];
+  id: number;
+  likes: number[];
   senderEmail?: string;
-  senderId?: string;
+  senderId?: number;
   departureDate: string;
   comments: IComment[];
   dateUTC: number;
@@ -50,12 +50,12 @@ export interface ICurrentUserPublications {
   imageURL: string;
   pages: string;
   section: string;
-  id: string;
+  id: number;
 }
 
 export interface ILike {
-  bookId: string;
-  userId: string;
+  id: number;
+  userId: number;
 }
 
 export interface ILikeData {
@@ -63,7 +63,7 @@ export interface ILikeData {
 }
 
 export interface IComment {
-  bookId: string;
+  bookId: number;
   author?: string;
   text: string;
   date: string;
@@ -74,7 +74,7 @@ export interface ICommentData {
 }
 
 export interface IUpdateDataWithId {
-  publicationId: string;
+  publicationId: number;
   author: string;
   description: string;
   pages: string;
@@ -106,7 +106,7 @@ export interface ICurrentUserSetDisliked {
 
 export interface ISetCurrentBook {
   type: TypesKeys.SET_CURRENT_BOOK;
-  payload: string;
+  payload: number;
 }
 
 export interface IGetCurrentBook {
@@ -126,7 +126,7 @@ export interface ISetCurrentSections {
 
 export interface ISetCurrentUserPublications {
   type: TypesKeys.SET_CURRENT_USER_PUBLICATIONS,
-  payload: string;
+  payload: number;
 }
 
 export interface IUpdatePublication {

@@ -45,7 +45,7 @@ export function Main() {
   const classes = useStyles();
 
   const collection = useSelector<AppRootStateType, ICollection[]>(state => state.collection.collection);
-  console.log(collection);
+
   const collectionsAfterSortDate = collection.sort((prev, next) => next.dateUTC - prev.dateUTC);
 
   const [filter, setFilter] = useState<string | null>('Все');
