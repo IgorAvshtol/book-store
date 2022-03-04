@@ -33,7 +33,7 @@ interface Values {
   title: string;
   description: string;
   file: any;
-  pages: string;
+  pages: number;
   section: string;
 }
 
@@ -61,7 +61,7 @@ export const ItemForm = () => {
               title: '',
               description: '',
               file: '',
-              pages: '',
+              pages: 0,
               section: ''
             }}
             validationSchema={validationSchema}

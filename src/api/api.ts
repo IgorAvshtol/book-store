@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { ICollection, ILike } from '../store/collections/collectionsTypes';
+import axios, { AxiosResponse } from 'axios';
+import { ICollection, ILike, ISetBook, IUpdateData, IUpdateDataWithId } from '../store/collections/collectionsTypes';
 
 const instance = axios.create({
   withCredentials: true,
@@ -33,5 +33,21 @@ export const booksAPI = {
   },
   getCurrentBook(bookId: number) {
     return instance.get(`books/${bookId}`);
+  },
+  getComments(bookId: number) {
+    return instance.get(`comments`, { params: { bookId: bookId } });
+  },
+  setComments(bookId: number, text: string) {
+    return instance.post(`comments`, { bookId, text });
+  },
+  setBook(data: any) {
+    return instance.post(`books`, data, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      }
+    });
+  },
+  editPublication(bookId: number, editData: IUpdateData) {
+    return instance.patch(`books/edit/${bookId}`, editData);
   }
 };

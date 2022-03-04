@@ -26,7 +26,7 @@ export function TagsSlick({ setFilter }: ITags) {
   const settings = {
     dots: true,
     speed: 500,
-    slidesToShow: 2,
+    slidesToShow: 4,
     slidesToScroll: 2,
     arrows: false,
     centerMode: true,

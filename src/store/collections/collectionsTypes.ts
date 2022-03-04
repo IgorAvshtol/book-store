@@ -3,6 +3,8 @@ export enum TypesKeys {
   CURRENT_BOOK_HAS_LIKED = 'CURRENT_BOOK_HAS_LIKED',
   SET_CURRENT_BOOK = 'SET_CURRENT_BOOK',
   GET_CURRENT_BOOK = 'GET_CURRENT_BOOK',
+  GET_COMMENTS = 'GET_COMMENTS',
+  SET_NEW_BOOK = 'SET_NEW_BOOK',
   CURRENT_BOOK_HAS_DISLIKED = 'CURRENT_BOOK_HAS_DISLIKED',
   SET_COMMENT = 'SET_COMMENT',
   SET_CURRENT_SECTIONS = 'SET_CURRENT_SECTIONS',
@@ -15,29 +17,43 @@ export interface ICollection {
   title: string;
   description: string;
   imageURL: string;
-  pages: string;
+  pages: number;
   section: string;
   id: number;
   likes: number[];
   senderEmail?: string;
   senderId?: number;
   departureDate: string;
-  comments: IComment[];
+  comments?: IComment[];
   dateUTC: number;
 }
 
-export interface ISetBook {
+export interface ISetDataBook {
   author: string;
   title: string;
   description: string;
   file: any;
-  pages: string;
+  pages: number;
   section: string;
+}
+
+export interface ISetBook {
+  authors: string;
+  title: string;
+  description: string;
+  pages: number;
+  section: string;
+  imageURL: any;
+  senderEmail: string;
+  senderId: number;
+  departureDate: string;
+  dateUTC: string;
 }
 
 export interface ICollectionState {
   collection: ICollection[];
   currentBook: ICollection;
+  // comments: IComment[];
   sections: string[];
   currentSections: string[];
   currentUserPublications: ICollection[];
@@ -48,7 +64,7 @@ export interface ICurrentUserPublications {
   title: string;
   description: string;
   imageURL: string;
-  pages: string;
+  pages: number;
   section: string;
   id: number;
 }
@@ -75,17 +91,17 @@ export interface ICommentData {
 
 export interface IUpdateDataWithId {
   publicationId: number;
-  author: string;
+  authors: string;
   description: string;
-  pages: string;
+  pages: number;
   section: string;
 }
 
 export interface IUpdateData {
-  author: string;
+  authors: string;
   title: string;
   description: string;
-  pages: string;
+  pages: number;
   section: string;
 }
 
@@ -114,6 +130,16 @@ export interface IGetCurrentBook {
   payload: ICollection;
 }
 
+export interface IGetComments {
+  type: TypesKeys.GET_COMMENTS;
+  payload: IComment[];
+}
+
+export interface INewBook {
+  type: TypesKeys.SET_NEW_BOOK,
+  payload: ICollection;
+}
+
 export interface ISetComment {
   type: TypesKeys.SET_COMMENT,
   payload: ICommentData;
@@ -139,6 +165,8 @@ export type ActionType = IGetCollection
     | ICurrentUserSetLiked
     | ISetCurrentBook
     | IGetCurrentBook
+    | IGetComments
+    | INewBook
     | ICurrentUserSetDisliked
     | ISetComment
     | ISetCurrentSections

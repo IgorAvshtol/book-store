@@ -42,7 +42,14 @@ const useStyles = makeStyles({
 
 interface ICommentsPage {
   comments?: IComment[];
-  id: number
+  id: number;
+}
+
+function editDate(date: string) {
+  const tmpDate = Date.parse(date);
+  const yearAndMonth = new Date(tmpDate).toLocaleDateString();
+  const hoursAndMinutes = new Date(tmpDate).toLocaleTimeString().split(':').slice(0, 2).join(':');
+  return `${yearAndMonth} ${hoursAndMinutes}`;
 }
 
 export function CommentsPage({ comments, id }: ICommentsPage) {
@@ -79,20 +86,20 @@ export function CommentsPage({ comments, id }: ICommentsPage) {
         <Grid container justifyContent={'center'} sx={{ height: '600px', marginTop: 5 }}>
           <div className={classes.textBlock}>
             {
-                comments && comments.map(text => {
+                comments && comments.map(comment => {
                   return (
-                      <div key={text.bookId}>
+                      <div key={comment.bookId}>
                         <Box className={classes.commentsBlock}>
                           <Box className={smallQuery ? classes.senderInformationResponse : classes.senderInformation}>
                             <Typography variant="caption" gutterBottom className={classes.commentDate}>
-                              {text.author}
+                              {comment.author}
                             </Typography>
                             <Typography variant="caption" gutterBottom className={classes.commentDate}>
-                              {text.date}
+                              {editDate(comment.date)}
                             </Typography>
                           </Box>
                           <Typography gutterBottom component="div">
-                            {text.text}
+                            {comment.text}
                           </Typography>
                         </Box>
                       </div>
@@ -101,7 +108,8 @@ export function CommentsPage({ comments, id }: ICommentsPage) {
             }
           </div>
           <Grid container direction={'column'} alignItems={'flex-end'}>
-            <TextField placeholder={t('comments.placeholder')} onChange={onInputChangeHandler} value={commentText} fullWidth
+            <TextField placeholder={t('comments.placeholder')} onChange={onInputChangeHandler} value={commentText}
+                       fullWidth
                        maxRows={2} variant={'outlined'}/>
             <Button onClick={onClickButtonHandler}>{t('comments.button')}</Button>
           </Grid>

@@ -66,12 +66,12 @@ export function IconContentForm({
                 ? <div>
                   <TextField
                       style={{ marginTop: 10 }}
-                      name="author"
+                      name="authors"
                       label={t('form.authors')}
                       variant="filled"
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      value={values.author}
+                      value={values.authors}
                   />
                   {touched.author && errors.author && <p>{errors.author}</p>}
                 </div>

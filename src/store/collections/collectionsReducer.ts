@@ -14,7 +14,7 @@ const initialState: ICollectionState = {
     'Классика'
   ],
   currentSections: [
-    'Все'
+    'Все',
   ],
   currentUserPublications: [] as ICollection[]
 };
@@ -53,33 +53,25 @@ export const collectionReducer = (state = initialState, action: ActionType): ICo
         ...state,
         currentBook: action.payload
       };
+    case TypesKeys.GET_COMMENTS:
+      return {
+        ...state,
+        currentBook: {...state.currentBook, comments: action.payload}
+      };
     case TypesKeys.SET_COMMENT:
       return {
         ...state,
-        collection: state.collection.map(book => book.id === action.payload.comments.bookId
-            ? {
-              ...book,
-              comments:
-                  [
-                    ...book.comments, action.payload.comments
-                  ]
-            }
-            : book),
-        currentBook: {
-          ...state.currentBook, comments: state.currentBook.comments
-              ? [...state.currentBook.comments, action.payload.comments]
-              : state.currentBook.comments
-        }
+        currentBook: {...state.currentBook, comments: [...state.currentBook.comments!, action.payload.comments]}
       };
-      // case TypesKeys.SET_CURRENT_SECTIONS:
-      //   return {
-      //     ...state,
-      //     currentSections: [...state.currentSections, action.payload]
-      //   };
+    case TypesKeys.SET_NEW_BOOK:
+      return {
+        ...state,
+        collection: [...state.collection, action.payload]
+      };
     case TypesKeys.SET_CURRENT_SECTIONS:
       return {
         ...state,
-        currentSections: [...state.currentSections, ...state.collection.map(book => book.section)]
+        currentSections: Array.from(new Set([...state.currentSections, ...state.collection.map(book => book.section)]))
       };
     case TypesKeys.SET_CURRENT_USER_PUBLICATIONS:
       return {
@@ -92,12 +84,21 @@ export const collectionReducer = (state = initialState, action: ActionType): ICo
         collection: state.collection.map(book => book.id === action.payload.publicationId
             ? {
               ...book,
-              authors: action.payload.author,
+              authors: action.payload.authors,
               description: action.payload.description,
               pages: action.payload.pages,
               section: action.payload.section,
             }
-            : book)
+            : book),
+        currentUserPublications: state.collection.map(book => book.id === action.payload.publicationId
+            ? {
+              ...book,
+              authors: action.payload.authors,
+              description: action.payload.description,
+              pages: action.payload.pages,
+              section: action.payload.section,
+            }
+            : book),
       };
     default:
       return state;

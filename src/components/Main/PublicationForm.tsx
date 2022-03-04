@@ -71,11 +71,12 @@ export const PublicationForm = ({ publication }: IPublication) => {
   const sections = useSelector<AppRootStateType, string[]>(state => state.collection.sections);
 
   const validationSchema = yup.object().shape({
-    author: yup.string().required(t('validation.field')),
+    authors: yup.string().required(t('validation.field')),
     title: yup.string().required(t('validation.field')),
     description: yup.string().required(t('validation.field')),
     pages: yup.number().typeError(t('validation.pages_field')).required(t('validation.field')),
   });
+  console.log(publication);
 
   const onEditOnButtonClick = (id: number) => {
     setEditMode(true)
@@ -89,7 +90,7 @@ export const PublicationForm = ({ publication }: IPublication) => {
       <div>
         <Formik
             initialValues={{
-              author: publication.authors,
+              authors: publication.authors,
               title: publication.title,
               description: publication.description,
               pages: publication.pages,
@@ -109,7 +110,7 @@ export const PublicationForm = ({ publication }: IPublication) => {
             }) => (
               <Form>
                 <Box className={smallQuery ? classes.containerResponse : classes.container}>
-                  <img src={publication.imageURL} className={classes.mainImage} alt="book-cover"/>
+                  <img src={'http://localhost:3000/' + publication.imageURL} className={classes.mainImage} alt="book-cover"/>
                   <Box className={classes.descriptionsBlock}>
                     <Box className={classes.iconsBlock}>
                       <IconContentForm

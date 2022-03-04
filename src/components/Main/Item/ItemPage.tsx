@@ -12,7 +12,7 @@ import CoPresentIcon from '@mui/icons-material/CoPresent';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
 import { useEffect } from 'react';
-import { getCurrentBook } from '../../../store/collections/collectionsThunk';
+import { getComments, getCurrentBook } from '../../../store/collections/collectionsThunk';
 
 const useStyles = makeStyles({
   container: {
@@ -77,7 +77,8 @@ export function ItemPage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getCurrentBook(Number(bookId!)));
+    dispatch(getCurrentBook(+bookId!));
+    dispatch(getComments(+bookId!))
   }, []);
 
   const book = useSelector<AppRootStateType, ICollection>(state => state.collection.currentBook);
