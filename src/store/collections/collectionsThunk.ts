@@ -20,7 +20,7 @@ export const getUsersCollections = (): ThunkAction<void, AppRootStateType, null,
   return async (dispatch: Dispatch) => {
     dispatch(actionsAuth.setLoadingAC(true));
     const { data } = await booksAPI.getBooks();
-    // @ts-ignore
+    console.log(data);
     dispatch(actions.getCollectionAC(data));
     dispatch(actions.setCurrentSectionsAC());
     dispatch(actionsAuth.setLoadingAC(false));
